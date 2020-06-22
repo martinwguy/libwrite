@@ -1,4 +1,4 @@
-= Introduction =
+# Introduction
 
 Libwrite ia a C library that allows you to create documents in the format
 used by Microsoft Write, directly from a program.
@@ -8,7 +8,7 @@ Most of the library's functions correspond to the menu items in Write itself.
 If you already know Write and C programming, generating Write files
 is very simple.
 
-== Limitations ==
+## Limitations
 
 Libwrite does not handle the printing functions from the File menu,
 nor the Find/Replace functions.
@@ -26,7 +26,7 @@ You cannot include more than 64 different fonts in a Write document.
 
 libwrite does not handle OLE (Object Linking and Embedding) objects.
 
-== General considerations ==
+## General considerations
 
 For some functions, you need to specify distances in "twips", which are
 equivalent to a twentieth of a point, a 1440th of an inch.
@@ -40,7 +40,7 @@ Example
 
 sets the paragraph indent to half a centimeter.
 
-== Special notes ==
+## Special notes
 
 Libwrite has one function that the Write program does not have, the ability
 to read a Write document inside the current one.
@@ -53,7 +53,7 @@ all the constants (#defines) start with "WRI_".
 
 To use the function in the library, you need to #include the file "libwrite.h".
 
-== Error management ==
+## Error management
 
 All the functions in libwrite return 0 (zero) if they finish correctly;
 otherwise they return a non-zero value, in which case the function that
@@ -63,11 +63,11 @@ If a fatal error occurs, such as running out of memory or problems
 writing to the disk, the wri_err() function will return a non-zero value
 from then on.
 
-= libwrite's functions =
+# libwrite's functions
 
-== Functions for managing files ==
+## Functions for managing files
 
-=== wri_new ===
+### wri_new
 
 Initializes all parameters to their default values and starts a new document.
 
@@ -81,7 +81,7 @@ itself.
 
 It cannot fail and it sets the value to wri_err to 0.
 
-=== wri_open ===
+### wri_open
 
 Opens a Write file as the current document.
 
@@ -95,21 +95,19 @@ performed on the current document (like wri_new)
 If an error happens, the current document is forgotten anyway. This function
 can give an error if
 
-    - it cannot read the file
-    - the file is not in Write format
-    - the file contains OLE objects
-    - the file is damaged
-    - there's not enough space in memory or on the disk to memorize
-      the contents of the file
+- it cannot read the file
+- the file is not in Write format
+- the file contains OLE objects
+- the file is damaged
+- there's not enough space in memory or on disk to memorize the file
 
-=== wri_read ===
+### wri_read
 
 Adds another Write file to the current document.
 
 	int wri_open(char *filename, int what);
 
 	filename: The name of the file to read, with path name and extension.
-
 	what: Specifies which kinds of information to read from the file.
 
 wri_read can be used to read, as well as the text, other characteristics
@@ -144,11 +142,11 @@ If the function fails, the current document is not modified in any way.
 
 It fails if:
 
-    - The file is not in Write format
-    - The file contains OLE objects
-    - It cannot read the file
-    - The file is damaged
-    - There is not enough memory or disk space to memorize the file's contents
+- The file is not in Write format
+- The file contains OLE objects
+- It cannot read the file
+- The file is damaged
+- There is not enough memory or disk space to memorize the file's contents
 
 Since the tab stops have a single setting for the whole document, it could
 modify the appearance of text that you have previously defined.
@@ -172,7 +170,7 @@ If the text that was inserted into the document before calling wri_read
 did not end with a new paragraph (that is \n or \f), then the first paragraph read from the file will be appended to the previous one, and will take on its
 formatting.
 
-=== wri_save ===
+### wri_save
 
 Saves the current document on the disk with the specified filename.
 
@@ -189,7 +187,7 @@ in case any fatal errors occured during the creation of the document.
 The function fails if it cannot create the named file, or if there is
 insufficient space on the disk.
 
-=== wri_exit ==
+### wri_exit
 
 Indicates that all operations on the current document are finished.
 
@@ -201,7 +199,7 @@ Once it has been called, no other function of the library may be called.
 
 It cannot fail.
 
-== Functions for managing characters ==
+## Functions for managing characters
 
 The following functions correspond to the items in Write's "Character" menu
 and they modify the properties of characters that are subsequently inserted.
@@ -209,7 +207,7 @@ and they modify the properties of characters that are subsequently inserted.
 All the following functions can fail if there's not enough memory available
 to record the new settings, or if a parameter has an unexpected value.
 
-=== wri_text ===
+### wri_text
 
 Adds a string of text to the document
 
@@ -234,13 +232,13 @@ There is no limit to the length of the "text" string.
 It can only fail if it cannot create or write to its temporary file
 (e.g. if the disk is full).
 
-=== wri_char_normal ===
+### wri_char_normal
 
 Cancels any bold, italic, underline or sub/superscript settings.
 
 	int wri_char_normal(void);
 
-=== wri_char_bold ===
+### wri_char_bold
 
 Manages characters' boldness.
 
@@ -250,7 +248,7 @@ Manages characters' boldness.
 
 value == 1 turns bold on; value == 0 turns it off.
 
-=== wri_char_italic ===
+### wri_char_italic
 
 Manages characters' italicness.
 
@@ -260,7 +258,7 @@ Manages characters' italicness.
 
 value == 1 turns italics on; value == 0 turns them off.
 
-=== wri_char_script ===
+### wri_char_script
 
 Manages superscript and subscript
 
@@ -281,7 +279,7 @@ In practice, this implies a reduction in character size, which is undone
 when you leave sub/superscript mode, to the same sizes as are used by
 wri_char_reduce() and wri_char_enlarge().
 
-=== wri_char_font_name ===
+### wri_char_font_name
 
 Selects the character font.
 
@@ -293,7 +291,7 @@ The default value is Arial.
 
 This function fails if you go over the maximum number of different fonts (64).
 
-=== wri_char_font_size ===
+### wri_char_font_size
 
 Chooses the size of the font
 
@@ -304,7 +302,7 @@ Chooses the size of the font
 This modifies the font's height to the specified value, which is in 72nds
 of an inch. "value" can be from 4 to 127 and the default value is 10.
 
-=== wri_char_reduce ===
+### wri_char_reduce
 
 Shrinks the size of the current font to the next smallest dimension in
 the following list: 6, 8, 10, 12, 14, 18, 24, 30, 36, 48 points.
@@ -313,7 +311,7 @@ the following list: 6, 8, 10, 12, 14, 18, 24, 30, 36, 48 points.
 
 This function has no effect if you try to reduce below 6 points.
 
-=== wri_char_enlarge ===
+### wri_char_enlarge
 
 Grows the size of the current font to the next largest dimension in
 the following list: 6, 8, 10, 12, 14, 18, 24, 30, 36, 48 points.
@@ -322,7 +320,7 @@ the following list: 6, 8, 10, 12, 14, 18, 24, 30, 36, 48 points.
 
 This function has no effect if you try to enlarge bwyond 48 points.
 
-== Functions to manage paragraphs ==
+## Functions to manage paragraphs
 
 The following functions, present in Write's "Paragraph" menu, determine
 the layout of the text in the current paragraph, and in the ones that follow.
@@ -333,7 +331,7 @@ has already been inserted into the current paragraph.
 All the following functions can fail if there is insufficient memory to
 remember the new format, or if they are given unforeseen parameters.
 
-=== wri_para_normal ===
+### wri_para_normal
 
 Assigns the default values to all characteristics of a paragraph.
 
@@ -343,7 +341,7 @@ Assigns the default values to all characteristics of a paragraph.
 By default, a paragraph is left-justified, has single line spacing and is
 not indented.
 
-=== wri_para_justify ===
+### wri_para_justify
 
 Sets the type of text alignment.
 
@@ -361,7 +359,7 @@ jc == WRI_BOTH aligns both the left and right edges of the text ("justified").
 
 The default value is WRI_LEFT.
 
-=== wri_para_interline ===
+### wri_para_interline
 
 Sets the distance between the lines of a paragraph
 
@@ -379,7 +377,7 @@ You can directly specify the spacing between lines in 1/1440ths of an inch.
 The values corresponding to the above #defines are240, 360 and 480 respectively,
 corresponding to 12, 18 and 24 points, or 6, 4 and 3 lines per inch.
 
-=== wri_para_indent_left ===
+### wri_para_indent_left
 
 Sets the paragraph indent with respect to the left page margin.
 
@@ -389,7 +387,7 @@ Sets the paragraph indent with respect to the left page margin.
 
 Default value: 0.
 
-=== wri_para_indent_right ===
+### wri_para_indent_right
 
 Sets the paragraph indent with respect to the right page margin.
 
@@ -399,7 +397,7 @@ Sets the paragraph indent with respect to the right page margin.
 
 Default value: 0.
 
-=== wri_para_indent_first ===
+### wri_para_indent_first
 
 Sets the indentation of the first line of each paragraph,
 with respect to the left page margin.
@@ -410,7 +408,7 @@ with respect to the left page margin.
 
 You can also use negative values and the default value is 0.
 
-== Functions to manage the document ==
+## Functions to manage the document
 
 These functions control the latout of the text in all pages of the document
 and correspond to the items in Write's "Document" menu.
@@ -427,7 +425,7 @@ from their default values of 11 and 8.25 inches (standard format A4).
 The following functions can only fail if they are passed values outside
 the permitted limits. See the General Notes above, on "twips".
 
-=== wri_doc_number_from ===
+### wri_doc_number_from
 
 Specifies the page number that will be assigned to the first page of the
 document.
@@ -440,7 +438,7 @@ The page number is printed if the header or the footer contain a \001 character.
 
 The default value is 1, and the limits are from 1 to 127.
 
-=== wri_doc_martin_left ===
+### wri_doc_martin_left
 
 Specifies the disrance between the left margin and the left edge of the page.
 
@@ -450,7 +448,7 @@ Specifies the disrance between the left margin and the left edge of the page.
 
 The default value is 1800 (1.25 inches) and it accepts values from 0 to 32767.
 
-=== wri_doc_martin_top ===
+### wri_doc_martin_top
 
 Specifies the distance between the top margin and the top edge of the page.
 
@@ -460,7 +458,7 @@ Specifies the distance between the top margin and the top edge of the page.
 
 The default value is 1440 (1 inch) and it accepts values from 0 to 32767.
 
-=== wri_doc_martin_right ===
+### wri_doc_martin_right
 
 Specifies the distance between the right margin and the right edge of the page.
 
@@ -470,7 +468,7 @@ Specifies the distance between the right margin and the right edge of the page.
 
 The default value is 1800 (1.25 inches) and it accepts values from 0 to 32767.
 
-=== wri_doc_martin_bottom ===
+### wri_doc_martin_bottom
 
 Specifies the distance between the bottom margin and the bottom edge of the
 page.
@@ -481,7 +479,7 @@ page.
 
 The default value is 1440 (1 inch) and it accepts values from 0 to 32767.
 
-=== wri_doc_martin_bottom ===
+### wri_doc_martin_bottom
 
 Specifies the distance between the bottom margin and the bottom edge of the
 page.
@@ -492,7 +490,7 @@ page.
 
 The default value is 1440 (1 inch) and it accepts values from 0 to 32767.
 
-=== wri_doc_page_width ===
+### wri_doc_page_width
 
 Specifies the width of the printed page.
 
@@ -502,7 +500,7 @@ Specifies the width of the printed page.
 
 The default value is 12240 (8.25 inches) and it accepts values from 1 to 32767.
 
-=== wri_doc_page_height ===
+### wri_doc_page_height
 
 Specifies the height of the printed page.
 
@@ -512,7 +510,7 @@ Specifies the height of the printed page.
 
 The default value is 15840 (11 inches) and it accepts values from 1 to 32767.
 
-=== wri_doc_tab_set ===
+### wri_doc_tab_set
 
 Specifies the height of the printed page.
 
@@ -541,7 +539,7 @@ The function wil lfail if "position" is negative or zero, of if 14 tab stops
 have already been assigned (Write only allows you to modify the first 12).
 By default, no tab stops are initially set.
 
-=== wri_doc_tab_clear ===
+### wri_doc_tab_clear
 
 Eliminate a tab stop.
 
@@ -552,13 +550,13 @@ Eliminate a tab stop.
 This function fails if "position" is negative or zero, or if no tab stop
 has been set at the specified position.
 
-=== wri_doc_tab_cancel ===
+### wri_doc_tab_cancel
 
 Eliminate all the defined tab stops.
 
 	int wri_doc_tab_clear(void);
 
-== Management of the page header and footer ==
+## Management of the page header and footer
 
 The page header and footer must be defined before any other text is entered
 into the body of the document. If you try to define them after having inserted
@@ -573,7 +571,7 @@ wri_doc_header() or wri_doc_footer().
 If you wish to insert the number of the current page in the header or footer,
 you can do so by calling wri_text("\001");
 
-=== wri_doc_header ===
+### wri_doc_header
 
 Indicates the start of the settings for the page header
 
@@ -581,7 +579,7 @@ Indicates the start of the settings for the page header
 
 This function fails if you have already sent some text to the current document.
 
-=== wri_doc_footer ===
+### wri_doc_footer
 
 Indicates the start of the settings for the page footer
 
@@ -589,7 +587,7 @@ Indicates the start of the settings for the page footer
 
 This function fails if you have already sent some text to the current document.
 
-=== wri_doc_return ===
+### wri_doc_return
 
 Returns from setting of the document's header or footer.
 
@@ -598,7 +596,7 @@ Returns from setting of the document's header or footer.
 Note that you can pass straight from defining the header to defining the footer
 without having to call wri_doc_return() in between.
 
-=== wri_doc_pofp ===
+### wri_doc_pofp
 
 Indicates whether the header and/or the footer should be printed on the
 first page of the document.
@@ -617,7 +615,7 @@ This function must b called during the definition of the header or footer.
 This function fails if it is called outside the definition of the header
 or footer.
 
-=== wri_doc_distance_from_top ===
+### wri_doc_distance_from_top
 
 Defines the distance of the page headers from the top edge of the page.
 
@@ -631,7 +629,7 @@ a page header or footer.
 The default value is 1080, corresponding to 0.75 inches, and the distance can
 range from 0 to 31680 (22 inches).
 
-=== wri_doc_distance_from_bottom ===
+### wri_doc_distance_from_bottom
 
 Defines the distance of the page footers from the bottom edge of the page.
 
@@ -673,9 +671,9 @@ Example
 	    wri_save("example.wri");
 	}
 
-== Handling fatal errors ==
+## Handling fatal errors
 
-=== wri_err ===
+### wri_err
 
 Is used to know if libwrite has failed unrecoverably at smoe point.
 
