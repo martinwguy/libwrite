@@ -1,0 +1,14 @@
+Libwrite is a C library for generating files in Microsoft Write format.
+
+The libwrite core was written in 1992 by Martin Guy <martinwguy@gmail.com>
+and Windows build system and bindings for C and Visual Basic were written and
+published as WriteKit by Claudio DeAngelis <c.deangelis@datart.it> in 1993.
+
+The code here is the libwrite core, callable from C.
+
+Documentation is in libwrite.md
+
+Build and install
+
+	make
+	sudo make install
